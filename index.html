@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SPACE Solution Global | 3D Mold Design Automation</title>
+<style>
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
+
+        /* Global Styles */
+        :root {
+            --primary-color: #e74c3c; /* Red from logo */
+            --secondary-color: #f1c40f; /* Yellowish for accent */
+            --dark-color: #2c3e50;
+            --light-color: #f4f7f9;
+            --text-color: #333;
+            --white-color: #ffffff;
+            --border-color: #ddd;
+            --header-height-desktop: 70px;
+            --header-height-mobile: 67px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--white-color);
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        .container { max-width: 1200px; margin: auto; overflow: hidden; padding: 0 2rem; }
+        .container-fluid { width: 100%; padding: 0 2rem; }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.5rem; color: var(--dark-color); text-align: center; margin-bottom: 3rem; }
+        h3 { font-size: 1.5rem; color: var(--primary-color); }
+
+        section { padding: 5rem 0; }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--white-color);
+            padding: 0.8rem 1.8rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover { background: #c0392b; }
+
+        .btn-outline { background: transparent; border: 2px solid var(--white-color); color: var(--white-color); }
+        .btn-outline:hover { background: var(--white-color); color: var(--primary-color); }
+
+        /* Navigation Bar */
+        #main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: background-color 0.3s ease;
+        }
+
+        #main-nav .logo-container { display: flex; align-items: center; text-decoration: none; }
+        #main-nav .logo-container img { height: 35px; }
+
+        #main-nav .desktop-nav { list-style: none; display: flex; }
+
+        #main-nav .desktop-nav li a {
+            color: var(--dark-color);
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        #main-nav .desktop-nav li a:hover { color: var(--primary-color); }
+
+        /* Hamburger Menu */
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger .bar { width: 25px; height: 3px; background-color: var(--dark-color); transition: all 0.3s ease; }
+        .mobile-nav { display: none; }
+
+        /* Hero Section */
+        
+        #hero {
+            /* Video background container */
+            position: relative;
+            background: #000; /* fallback color */
+            height: 100vh;
+            color: var(--white-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            overflow: hidden;
+        }
+        /* Overlay for readability */
+        #hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45));
+            z-index: 1;
+        }
+        /* Ensure hero text & buttons are above overlay */
+        #hero > * { position: relative; z-index: 2; }
+        /* Video wrapper (full-bleed) */
+        #hero .hero-video {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        #hero .hero-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #hero h1 { font-size: 3.5rem; }
+        #hero p { font-size: 1.25rem; max-width: 600px; margin: 1rem 0 2rem 0; }
+        #hero .btn { margin: 0 0.5rem; }
+
+        /* About */
+        #about { background-color: var(--white-color); }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .about-content img {
+            width: 100%;
+            max-width: 450px;
+            display: block;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .about-content .text-content h2 { text-align: left; }
+        .about-content .text-content p { margin-bottom: 1rem; }
+        .proved-value {
+            background: var(--light-color);
+            padding: 1rem;
+            border-left: 5px solid var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        /* ===========================
+           Solutions Section (Improved)
+           =========================== */
+        #solutions { background-color: var(--light-color); padding: 5rem 0; }
+
+        #solutions .solutions-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 2rem;
+            background: var(--white-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Left Nav */
+        #solutions .solution-nav {
+            padding: 1rem 0;
+            border-right: 1px solid var(--border-color);
+            background-color: #fbfdff;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            position: relative;
+        }
+        #solutions .solution-nav ul { list-style: none; }
+        #solutions .solution-nav ul li a {
+            display: block;
+            padding: 0.9rem 1.25rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            border-left: 4px solid transparent;
+            border-radius: 0 6px 6px 0;
+        }
+        #solutions .solution-nav ul li a.active,
+        #solutions .solution-nav ul li a:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* Content */
+        #solutions .solution-content { padding: 2rem; }
+        #solutions .solution-tab-content { display: none; }
+        #solutions .solution-tab-content.active { display: block; animation: fadeIn 0.35s ease-in-out; }
+        #solutions .solution-tab-content h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: var(--dark-color);
+        }
+        #solutions .solution-tab-content .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.75rem;
+            align-items: flex-start;
+        }
+        #solutions .solution-tab-content .detail-grid img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-top: 0.75rem;
+            object-fit: cover;
+        }
+        #solutions .solution-tab-content .detail-grid .video-placeholder {
+            background: #e0e0e0;
+            width: 100%;
+            aspect-ratio: 16/9; /* 안정적인 미디어 박스 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #solutions .solution-tab-content .detail-grid .play-button {
+            font-size: 3rem;
+            color: rgba(0,0,0,0.45);
+        }
+
+        /* History Section */
+        #history { background-color: var(--white-color); }
+        .timeline { position: relative; max-width: 900px; margin: 0 auto; }
+        .timeline::after { content: ''; position: absolute; width: 6px; background-color: var(--primary-color); top: 0; bottom: 0; left: 50%; margin-left: -3px; }
+        .timeline-container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; }
+        .timeline-container.left { left: 0; }
+        .timeline-container.right { left: 50%; }
+        .timeline-container::after { content: ''; position: absolute; width: 25px; height: 25px; right: -17px; background-color: white; border: 4px solid var(--primary-color); top: 15px; border-radius: 50%; z-index: 1; }
+        .timeline-container.right::after { left: -16px; }
+        .timeline-container .content { padding: 20px 30px; background-color: white; position: relative; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .timeline-container .content h3 { margin-bottom: 0.5rem; }
+        .timeline-container .content ul { padding-left: 20px; color: #555;}
+
+        /* Partners Section - Logo Slider */
+        #partners { background-color: var(--light-color); padding: 5rem 0; }
+        .logo-slider-container {
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .logo-slider-container::before,
+        .logo-slider-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            z-index: 2;
+        }
+        .logo-slider-container::before { left: 0; background: linear-gradient(to left, rgba(244, 247, 249, 0), var(--light-color)); }
+        .logo-slider-container::after { right: 0; background: linear-gradient(to right, rgba(244, 247, 249, 0), var(--light-color)); }
+        .logo-track { display: flex; }
+        .track-1 { width: calc(180px * 10); animation: scroll-left 30s linear infinite; }
+        .track-2 { width: calc(180px * 8); animation: scroll-left 40s linear infinite; }
+        .logo-item { height: 80px; width: 180px; display: flex; align-items: center; justify-content: center; padding: 0 15px; }
+        .logo-item img { max-width: 140px; max-height: 50px; transition: filter 0.3s ease; }
+        /* .logo-item:hover img { filter: grayscale(0%); } */
+
+        /* Distributor Section */
+        #distributor { background: var(--dark-color); color: var(--white-color); text-align: center; }
+        #distributor h2, #distributor h3 { color: var(--white-color); }
+        #distributor p { max-width: 800px; margin: 0 auto 2rem auto; }
+        .conditions { text-align: left; max-width: 700px; margin: 2rem auto; background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 8px; }
+        .conditions ul { list-style: none; padding-left: 0; }
+        .conditions ul li { margin-bottom: 1rem; padding-left: 1.5rem; position: relative; }
+        .conditions ul li::before { content: '✔'; color: var(--secondary-color); position: absolute; left: 0; }
+        .conditions ul ul { margin-top: 0.5rem; }
+
+        /* Footer */
+        footer { background: #222; color: #aaa; padding: 2rem 0; text-align: center; }
+        footer .container { display: flex; flex-direction: column; gap: 1rem; }
+
+        /* Animation On Scroll */
+        .animated-section { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .animated-section.show { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-180px * 5)); } }
+
+        /* =================
+           Responsive Tweaks
+           ================= */
+        @media (max-width: 992px) {
+            .about-content,
+            #solutions .solution-tab-content .detail-grid { grid-template-columns: 1fr; }
+
+            #solutions .solutions-layout {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            #solutions .solution-nav {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                border-top-right-radius: 8px;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2.2rem; }
+
+            #hero h1 { font-size: 2.8rem; }
+
+            /* Header */
+            #main-nav .desktop-nav { display: none; }
+            #main-nav .hamburger { display: flex; }
+
+            .mobile-nav {
+                display: block;
+                position: fixed;
+                top: 67px;
+                left: 0;
+                width: 100%;
+                background: var(--white-color);
+                flex-direction: column;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease-in-out;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                z-index: 1000;
+            }
+            .mobile-nav.active { transform: translateY(0); }
+            .mobile-nav ul { list-style: none; flex-direction: column; width: 100%; }
+            .mobile-nav ul li { text-align: center; border-bottom: 1px solid var(--light-color); }
+            .mobile-nav ul li a { display: block; padding: 1.2rem; text-decoration: none; color: var(--dark-color); }
+            .hamburger.active .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+
+            /* Timeline */
+            .timeline::after { left: 31px; }
+            .timeline-container { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-container.right { left: 0%; }
+            .timeline-container.left::after, .timeline-container.right::after { left: 15px; }
+            #main-nav .logo-container img { height: 30px; }
+
+            /* ===== Solutions (mobile) ===== */
+            #solutions { padding: 3rem 0; }
+            #solutions .solutions-layout { display: block; }
+
+            /* Sticky pill nav */
+            #solutions .solution-nav {
+                position: sticky;
+                top: calc(var(--header-height-mobile) + 6px); /* 메인 헤더 아래에 고정 */
+                z-index: 3;
+                background: #fbfdff;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid var(--border-color);
+                border-radius: 8px 8px 0 0;
+            }
+            #solutions .solution-nav::before,
+            #solutions .solution-nav::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                width: 24px;
+                height: 100%;
+                pointer-events: none;
+                z-index: 4;
+            }
+            #solutions .solution-nav::before {
+                left: 0;
+                background: linear-gradient(to left, rgba(255,255,255,0), #fbfdff);
+            }
+            #solutions .solution-nav::after {
+                right: 0;
+                background: linear-gradient(to right, rgba(255,255,255,0), #fbfdff);
+            }
+
+            #solutions .solution-nav ul {
+                display: flex;
+                gap: 0.5rem;
+                overflow-x: auto;
+                padding: 0.5rem 1rem 0.75rem;
+                margin: 0;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                scrollbar-color: #ccc #fbfdff;
+                scroll-snap-type: x mandatory;
+            }
+            #solutions .solution-nav ul::-webkit-scrollbar { height: 6px; }
+            #solutions .solution-nav ul::-webkit-scrollbar-thumb { background: #ccc; border-radius: 6px; }
+
+            #solutions .solution-nav ul li { flex: 0 0 auto; scroll-snap-align: start; }
+            #solutions .solution-nav ul li a {
+                display: inline-flex;
+                align-items: center;
+                border: 1px solid var(--border-color);
+                border-radius: 999px;
+                padding: 0.6rem 1rem;
+                white-space: nowrap;
+                color: var(--dark-color);
+                background: #fff;
+                font-size: 0.95rem;
+                border-left: none; /* 데스크톱 스타일 제거 */
+            }
+            #solutions .solution-nav ul li a.active,
+            #solutions .solution-nav ul li a:hover {
+                background: var(--primary-color);
+                border-color: var(--primary-color);
+                color: #fff;
+            }
+
+            #solutions .solution-content { padding: 1rem 0.75rem; }
+            #solutions .solution-tab-content h3 { font-size: 1.6rem; }
+
+            #solutions .solution-tab-content .detail-grid {
+                grid-template-columns: 1fr; /* 1열 스택 */
+                gap: 1rem;
+            }
+            #solutions .solution-tab-content .detail-grid .video-placeholder {
+                aspect-ratio: 16/9;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.3rem; }
+            section { padding: 3rem 0; }
+            .container, .container-fluid { padding: 0 1rem; }
+            #hero h1 { font-size: 2.4rem; }
+            #hero p { font-size: 1rem; }
+
+            #solutions .solution-content { padding: 1rem 0.5rem; }
+            #solutions .solution-tab-content p { font-size: 0.95rem; }
+        }
+    
+        /* Responsive video */
+        .responsive-video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-top: 0.75rem;
+            display: block;
+        }
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+        }
+</style>
+</head>
+<body>
+<nav id="main-nav">
+<a class="logo-container" href="#hero">
+<img alt="SPACE Solution Logo" src="./LOGO/space_logo.jpg"/>
+</a>
+<ul class="desktop-nav">
+<li><a href="#hero">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#solutions">Solutions</a></li>
+<li><a href="#history">History</a></li>
+<li><a href="#partners">Partners</a></li>
+<li><a href="#distributor">Distributor</a></li>
+</ul>
+<div aria-expanded="false" aria-label="Open menu" class="hamburger" role="button">
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+</div>
+</nav>
+<div aria-hidden="true" class="mobile-nav">
+<ul>
+<li><a href="#hero">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#solutions">Solutions</a></li>
+<li><a href="#history">History</a></li>
+<li><a href="#partners">Partners</a></li>
+<li><a href="#distributor">Distributor</a></li>
+</ul>
+</div>
+<header id="hero">
+<div class="hero-video"><video autoplay loop muted playsinline preload="metadata"><source src="./VIDEO/Landing_Page_Video.mp4" type="video/mp4"/>Your browser does not support the video tag.</video></div>
+<h1>The Future of 3D Mold Design: T-Solution</h1>
+<p>An Innovative 3D Mold Design Automation Solution. Reduce design time by 30-70% and decrease design errors by over 95%.</p>
+<div>
+<a class="btn" href="#solutions">Explore Our Solutions</a>
+<a class="btn btn-outline" href="#distributor">Become a Distributor</a>
+</div>
+</header>
+<main>
+<section class="animated-section" id="about">
+<div class="container">
+<div class="about-content">
+<img alt="T-Solution 3D Mold" src="./t_solution_3d_mold.jpg"/>
+<div class="text-content">
+<h2>Design Automation Solution</h2>
+<div class="proved-value">
+<strong>Proved value:</strong> Through NX system based 3D Modeling, it reduces time for the mold design by 30-70% and remarkably decreases the design error by more than 95%.
+                        </div>
+<p>We propose an innovative 3D mold design automation solution. By applying evolved 3D modeling technology to mold design, our industry has achieved new technical innovation.</p>
+<p>SPACE Solution incorporates its knowledge and experiences in mold industry and NX modeling to T-Solution to develop the optimized automation solution more advanced than the existing 3D design system.</p>
+<p>Our technical support team is composed of fully experienced workers in the mold industry and NX technology. Therefore, they understand users' difficulties and needs, making their best to improve technology of our clients through customized education and high standard technical support.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ======= SOLUTIONS (Improved Responsive) ======= -->
+<section class="animated-section" id="solutions">
+<div class="container">
+<h2>Our Powerful Solutions</h2>
+<div class="solutions-layout">
+<nav aria-label="Solutions tabs" class="solution-nav">
+<ul>
+<li><a aria-selected="true" class="solution-tab-link active" data-tab="test" href="#" role="tab">T-EST</a></li>
+<li><a aria-selected="false" class="solution-tab-link" data-tab="tmold" href="#" role="tab">T-MOLD</a></li>
+<li><a aria-selected="false" class="solution-tab-link" data-tab="tedm" href="#" role="tab">T-EDM</a></li>
+<li><a aria-selected="false" class="solution-tab-link" data-tab="tgun" href="#" role="tab">T-GUN</a></li>
+<li><a aria-selected="false" class="solution-tab-link" data-tab="thole" href="#" role="tab">T-HOLE</a></li>
+<li><a aria-selected="false" class="solution-tab-link" data-tab="manager" href="#" role="tab">MOLD-MANAGER</a></li>
+<li><a aria-selected="false" class="solution-tab-link" data-tab="tview" href="#" role="tab">T-VIEW</a></li>
+</ul>
+</nav>
+<div class="solution-content">
+<div aria-labelledby="tab-test" class="solution-tab-content active" id="test" role="tabpanel">
+<h3>T-EST</h3>
+<div class="detail-grid">
+<div>
+<p>An automatic mold cost estimate program for injection, die-casting, rubber, and packing after 3D automatic mold design. It quickly and accurately estimates costs through 3D modeling analysis, a rich database, and know-how on estimation.</p>
+<p>T-EST drastically reduces the time and effort involved in the initial quotation process, ensuring competitive pricing and faster response times for your clients.</p>
+<img alt="T-EST Diagram" src="./T_EST.jpg"/>
+</div>
+<div><div class="video-wrapper"><video controls="True"><source src="./VIDEO/T-EST.mp4" type="video/mp4"/>Your browser does not support the video tag.</video></div></div>
+</div>
+</div>
+<div aria-labelledby="tab-tmold" class="solution-tab-content" id="tmold" role="tabpanel">
+<h3>T-MOLD</h3>
+<div class="detail-grid">
+<div>
+<p>The solution for full 3D automatic injection and Die-casting mold design based on NX. It has a proven record of shortening design time from 20 days to 12 days and achieving 0% design defects in success cases.</p>
+<p>T-MOLD streamlines complex mold design processes, ensuring precision and efficiency from concept to completion. It minimizes human error and accelerates your production cycle.</p>
+<img alt="T-MOLD Design" src="./T_MOLD.jpg"/>
+</div>
+<div><div class="video-wrapper"><video controls="True"><source src="./VIDEO/T-MOLD.mp4" type="video/mp4"/>Your browser does not support the video tag.</video></div></div>
+</div>
+</div>
+<div aria-labelledby="tab-tedm" class="solution-tab-content" id="tedm" role="tabpanel">
+<h3>T-EDM</h3>
+<div class="detail-grid">
+<div>
+<p>The solution for 3D automatic electrode design based on NX. All post-works are automated after the semi-automated creation of the shape section, including drawing, CAM exporting, and order sheets. Reduces design time by over 30-50%.</p>
+<p>T-EDM optimizes the electrode design workflow, ensuring accuracy and consistency while significantly cutting down on manual labor and potential errors.</p>
+<img alt="T-EDM Process" src="./T_EDM.jpg"/>
+</div>
+<div><div class="video-wrapper"><video controls="True"><source src="./VIDEO/T-EDM.mp4" type="video/mp4"/>Your browser does not support the video tag.</video></div></div>
+</div>
+</div>
+<div aria-labelledby="tab-tgun" class="solution-tab-content" id="tgun" role="tabpanel">
+<h3>T-GUN</h3>
+<div class="detail-grid">
+<div>
+<p>The solution for automatic creation of drawing, work orders, and Gun-Drill machining CAM through 3D modeling. It can recognize properties of Gundrill holes created in T-MOLD without additional settings, allowing one-click output.</p>
+<p>T-GUN ensures precise and automated generation of necessary documentation and CAM data for gun drilling, enhancing efficiency and reducing setup times in manufacturing.</p>
+<img alt="T-GUN Process" src="./T_GUN.jpg"/>
+</div>
+<div><div class="video-wrapper"><video controls="True"><source src="./VIDEO/T-GUN.mp4" type="video/mp4"/>Your browser does not support the video tag.</video></div></div>
+</div>
+</div>
+<div aria-labelledby="tab-thole" class="solution-tab-content" id="thole" role="tabpanel">
+<h3>T-HOLE</h3>
+<div class="detail-grid">
+<div>
+<p>The solution for automatic creation of drawing, work orders and CAM for the Hole part through 3D modeling. It enables outputting setting drawings, CAM sheets, and NC data with a single click by recognizing hole properties from T-MOLD.</p>
+<p>T-HOLE automates the tedious process of hole feature detailing, guaranteeing accuracy and speeding up the preparation for machining operations.</p>
+<img alt="T-HOLE Process" src="./T_HOLE.jpg"/>
+</div>
+<div><div class="video-wrapper"><video controls="True"><source src="./VIDEO/T-HOLE.mp4" type="video/mp4"/>Your browser does not support the video tag.</video></div></div>
+</div>
+</div>
+<div aria-labelledby="tab-manager" class="solution-tab-content" id="manager" role="tabpanel">
+<h3>MOLD-MANAGER</h3>
+<div class="detail-grid">
+<div>
+<p>An easy and comfortable system for managers and workers to manage work schedules for each process from obtaining an order to shipping. Based on Web and Android, it allows data sharing and quick decision-making, increasing company productivity.</p>
+<p>MOLD-MANAGER centralizes project information, providing real-time updates and facilitating seamless communication across all stages of mold production, from order to delivery.</p>
+<img alt="MOLD-MANAGER UI" src="./MOLD.jpg"/>
+</div>
+
+</div>
+</div>
+<div aria-labelledby="tab-tview" class="solution-tab-content" id="tview" role="tabpanel">
+<h3>T-VIEW</h3>
+<div class="detail-grid">
+<div>
+<p>A powerful viewer solution for professionals, managers, and field workers who operate within the NX environment. It provides easy access and visualization of complex 3D models without needing a full license of the design software.</p>
+<p>T-VIEW enhances collaboration by allowing stakeholders to review and comment on 3D designs efficiently, irrespective of their CAD software expertise, thus speeding up approval processes.</p>
+<!-- <img alt="T-VIEW 3D Model" src="https://i.imgur.com/8QpgyYw.jpeg"/> -->
+</div>
+
+</div>
+</div>
+</div><!-- /.solution-content -->
+</div><!-- /.solutions-layout -->
+</div>
+</section>
+<!-- ======= /SOLUTIONS ======= -->
+<section class="animated-section" id="history">
+<div class="container-fluid">
+<h2>Our Journey of Innovation</h2>
+<div class="timeline">
+<div class="timeline-container left animated-section"><div class="content"><h3>2001</h3><p>Development and collaborative use of 2D/3D automatic electrode design.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2003</h3><p>Development of automatic Full 3D mold program for injection and die-casting mold design.</p></div></div>
+<div class="timeline-container left animated-section"><div class="content"><h3>2004</h3><p>Completed on-site operational testing for the entire mold manufacturing process including Full 3D mold design, CAM, machining, and assembly. Began development of the commercial version of the mold solution.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2005</h3><p>Completed development of the commercial version and began sales.<ul><li>Adopted by Mobase, Seongshin Chemical, Jungwoo IT, Samwon Mold, GNB.</li></ul></p></div></div>
+<div class="timeline-container left animated-section"><div class="content"><h3>2006</h3><p>Adopted by 14 companies including Samsung Electronics, Namdo Mold, Wooseong Precision, and Keumneung.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2007</h3><p>Adopted by 16 companies including Aspic, Miju Precision, and Taeseong Precision, with exports to Taiwan and China. Completed development of the "T-PARTING" automatic 3D parting program.</p></div></div>
+<div class="timeline-container left animated-section"><div class="content"><h3>2008</h3><p>Adopted by 17 companies including Korea Alps, Jaeyoung Solutec, and Korea Mold.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2009</h3><p>Completed development of the Press 3D automatic mold design solution.<ul><li>Adopted by 11 companies including ASIS, Inopla, and Shinheung Precision.</li></ul></p></div></div>
+<div class="timeline-container left animated-section"><div class="content"><h3>2010</h3><p>Adopted by ARRK Korea, Samsung SDI, Seobo Precision, LG Electronics, Inzi Controls, and Hyundai IHL.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2013</h3><p>Developed an automatic mold cost estimation solution for injection and rubber molds for Kyungdong Navien.</p></div></div>
+<div class="timeline-container left animated-section"><div class="content"><h3>2015</h3><p>Developed an automatic mold cost estimation solution for injection, die-casting, and packing molds for LG Electronics. Developed a mold production management solution (Web, Android based) for managing processes from order to shipment.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2022</h3><p>A-Tech Solution adopted our injection design solution.</p></div></div>
+<div class="timeline-container left animated-section"><div class="content"><h3>2023</h3><p>Development of an intelligent mold design solution.</p></div></div>
+<div class="timeline-container right animated-section"><div class="content"><h3>2024</h3><p>A-Tech Solution adopted our press design solution.</p></div></div>
+</div>
+</div>
+</section>
+<section class="animated-section" id="partners">
+<div class="container">
+<h2>Trusted by Industry Leaders</h2>
+</div>
+<div class="logo-slider-container">
+<div class="logo-track track-1">
+<div class="logo-item"><img alt="Alps" src="./LOGO/Alps_Alpine.gif"/></div>
+<div class="logo-item"><img alt="ARRK" src="./LOGO/ASIS.png"/></div>
+<div class="logo-item"><img alt="Samsung" src="./LOGO/Changhong.png"/></div>
+<div class="logo-item"><img alt="Hyundai IHL" src="./LOGO/HYUNDAI_IHL.jpg"/></div>
+<div class="logo-item"><img alt="Samsung" src="./LOGO/SAMSUNG.png"/></div>
+<div class="logo-item"><img alt="LG Electronics" src="./LOGO/SAMSUNG SDI.png"/></div>
+<div class="logo-item"><img alt="LG Electronics" src="./LOGO/LG.png"/></div>
+<div class="logo-item"><img alt="Hyundai IHL" src="./LOGO/경동나비엔.jpg"/></div>
+<div class="logo-item"><img alt="Alps" src="./LOGO/아모레퍼시픽.png"/></div>
+<div class="logo-item"><img alt="ARRK" src="./LOGO/연우.jpg"/></div>
+</div>
+<!-- <div class="logo-track track-2">
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=Inzi+Controls" alt="Inzi Controls"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=Jysolutec" alt="Jysolutec"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=Shinheung" alt="Shinheung"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=ASIS" alt="ASIS"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=Inzi+Controls" alt="Inzi Controls"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=Jysolutec" alt="Jysolutec"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=Shinheung" alt="Shinheung"></div>
+                    <div class="logo-item"><img src="https://placeholder.com/140x50/e0e0e0/999?text=ASIS" alt="ASIS"></div>
+                </div> -->
+</div>
+</section>
+<section class="animated-section" id="distributor">
+<div class="container">
+<h2>Join Us as a Global Distributor</h2>
+<p>We are currently looking for overseas distributors to sell our industry-leading solutions. Partner with us to bring T-Solution's innovation to your market.</p>
+<div class="conditions">
+<h3>Distributor Requirements</h3>
+<ul>
+<li>A sales target must be set from the second year of the partnership.</li>
+<li>You must dispatch engineers to our headquarters in Korea for mandatory technical training for each solution:
+                            <ul>
+<li>T-EST Training: 1 week</li>
+<li>T-EDM Training: 1 week</li>
+<li>T-MOLD Training: 1 month</li>
+</ul>
+</li>
+</ul>
+</div>
+<h3>Contact Us to Get Started</h3>
+<p><strong>Email:</strong> gysong@spacesolution.kr<br/>
+<strong>Address:</strong> 313 Cl Tower, 606 Sumokwon-ro, Osan-si, Gyeonggi-do, Republic of Korea</p>
+<a class="btn" href="mailto:gysong@spacesolution.kr">Inquire Now</a>
+</div>
+</section>
+</main>
+<footer>
+<div class="container">
+<p><strong>SPACE Solution | Manufacturing Innovator</strong></p>
+<p>313 Cl Tower, 606 Sumokwon-ro, Osan-si, Gyeonggi-do, Republic of Korea</p>
+<p>© 2025 SPACE Solution. All Rights Reserved.</p>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Solutions Tab functionality
+            const solutionLinks = document.querySelectorAll('.solution-tab-link');
+            const solutionContents = document.querySelectorAll('.solution-tab-content');
+            const solutionNav = document.querySelector('#solutions .solution-nav ul');
+
+            function showSolutionTab(tabId) {
+                solutionContents.forEach(content => content.classList.remove('active'));
+                solutionLinks.forEach(link => {
+                    link.classList.remove('active');
+                    link.setAttribute('aria-selected', 'false');
+                });
+
+                const activeContent = document.getElementById(tabId);
+                const activeLink = document.querySelector(`.solution-tab-link[data-tab="${tabId}"]`);
+
+                if (activeContent && activeLink) {
+                    activeContent.classList.add('active');
+                    activeLink.classList.add('active');
+                    activeLink.setAttribute('aria-selected', 'true');
+
+                    // 모바일에서 탭을 중앙으로 스크롤
+                    try {
+                        activeLink.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    } catch (e) {}
+                }
+            }
+
+            solutionLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const id = e.currentTarget.getAttribute('data-tab');
+                    showSolutionTab(id);
+                });
+
+                // 키보드 접근성 (좌우 화살표)
+                link.addEventListener('keydown', (e) => {
+                    const idx = Array.from(solutionLinks).indexOf(e.currentTarget);
+                    if (e.key === 'ArrowRight') {
+                        const next = solutionLinks[(idx + 1) % solutionLinks.length];
+                        next.focus();
+                        showSolutionTab(next.getAttribute('data-tab'));
+                    } else if (e.key === 'ArrowLeft') {
+                        const prev = solutionLinks[(idx - 1 + solutionLinks.length) % solutionLinks.length];
+                        prev.focus();
+                        showSolutionTab(prev.getAttribute('data-tab'));
+                    }
+                });
+            });
+
+            // 초기 표시
+            if (solutionLinks.length > 0) {
+                showSolutionTab(solutionLinks[0].getAttribute('data-tab'));
+            }
+
+            // Hamburger Menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const mobileNav = document.querySelector('.mobile-nav');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+
+            hamburger.addEventListener('click', () => {
+                const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+                hamburger.classList.toggle('active');
+                mobileNav.classList.toggle('active');
+                hamburger.setAttribute('aria-expanded', String(!expanded));
+                mobileNav.setAttribute('aria-hidden', String(expanded));
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    mobileNav.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    mobileNav.setAttribute('aria-hidden', 'true');
+                });
+            });
+
+            // On-scroll Animation functionality
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const animatedSections = document.querySelectorAll('.animated-section');
+            animatedSections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
